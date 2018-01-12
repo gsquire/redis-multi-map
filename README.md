@@ -6,6 +6,10 @@ By leveraging the ability to make [custom types](https://redis.io/topics/modules
 use Rust to provide a new data structure. The `MultiMap` type is akin to Redis' existing hash type with the added
 benefit of storing more than one value.
 
+## Production Readiness
+I would not consider this module to be production ready at the moment. There needs to be more
+unit tests as well as benchmarking.
+
 ## Install
 You must have Rust and LLVM installed in order to compile this project. The preferred way to install Rust is using the
 [rustup](https://rustup.rs/) tool. If you are wary of shell script installs, you can download it through brew.
