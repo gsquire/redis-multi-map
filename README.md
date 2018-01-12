@@ -1,4 +1,6 @@
 # redis-multi-map
+[![Build Status](https://travis-ci.org/gsquire/redis-multi-map.svg?branch=master)](https://travis-ci.org/gsquire/redis-multi-map)
+
 This crate provides a custom [Redis module](https://redis.io/topics/modules-intro) type using Rust's FFI support.
 By leveraging the ability to make [custom types](https://redis.io/topics/modules-native-types) that Redis can utilize we can
 use Rust to provide a new data structure. The `MultiMap` type is akin to Redis' existing hash type with the added
