@@ -319,6 +319,8 @@ pub unsafe extern "C" fn MultiMapAofRewrite(
     value: *mut raw::c_void,
 ) {
     let map = &*(value as *mut MultiMap);
+    let insert_cmd = CString::new("multimap.insert").unwrap();
+    let flags = CString::new("scc").unwrap();
 
     for (k, v) in map {
         let actual_key = CString::new(k.as_bytes()).unwrap();
@@ -326,11 +328,10 @@ pub unsafe extern "C" fn MultiMapAofRewrite(
         for value in v {
             let actual_value = CString::new(value.as_bytes()).unwrap();
 
-            // FIXME: Why doesn't this automatically get generated?
-            ffi::ExportedRedisModule_EmitAOF(
+            ffi::RedisModule_EmitAOF.unwrap()(
                 aof,
-                "MULTIMAP.INSERT\0".as_ptr(),
-                "scc\0".as_ptr(),
+                insert_cmd.as_ptr(),
+                flags.as_ptr(),
                 key,
                 actual_key.as_ptr(),
                 actual_value.as_ptr(),

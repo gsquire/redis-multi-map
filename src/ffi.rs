@@ -25,11 +25,4 @@ extern "C" {
         module_version: libc::c_int,
         api_version: libc::c_int,
     ) -> libc::c_int;
-
-    pub fn ExportedRedisModule_EmitAOF(
-        aof: *mut RedisModuleIO,
-        cmdname: *const u8,
-        fmt: *const u8,
-        ...
-    );
 }
