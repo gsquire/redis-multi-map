@@ -365,8 +365,13 @@ pub unsafe extern "C" fn RedisModule_OnLoad(
     let type_name = CString::new("rmultimap").unwrap();
     // We should check if this is NULL like the C example does but it isn't working as intended
     // currently.
-    let _ =
+    let out_type =
         ffi::RedisModule_CreateDataType.unwrap()(ctx, type_name.as_ptr(), 0, &mut type_functions);
+    if out_type.is_null() {
+        return ffi::REDIS_ERR;
+    } else {
+        MULTI_MAP_TYPE = out_type;
+    }
 
     let insert_cmd = CString::new("multimap.insert").unwrap();
     if ffi::RedisModule_CreateCommand.unwrap()(
