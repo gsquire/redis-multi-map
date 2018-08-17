@@ -1,7 +1,7 @@
 //! The `multi_map` module represents an implementation of a `MultiMap` to be used by the
 //! Redis module system.
-use std::collections::HashMap;
 use std::collections::hash_map::Iter;
+use std::collections::HashMap;
 use std::iter::IntoIterator;
 
 /// `MultiMap` represents a map of `String` keys to a `Vec` of `String` values.

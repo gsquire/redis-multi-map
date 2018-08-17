@@ -7,7 +7,7 @@ authors = ["Garrett Squire <garrettsquire@gmail.com>"]
 libc = "0.2"
 
 [build-dependencies]
-bindgen = "0.35"
+bindgen = "0.38"
 cc = "1.0"
 
 [lib]

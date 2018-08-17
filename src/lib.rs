@@ -1,9 +1,9 @@
 extern crate libc;
 
-use std::slice;
 use std::borrow::Cow;
 use std::ffi::{CStr, CString};
 use std::os::raw;
+use std::slice;
 
 #[allow(dead_code)]
 mod ffi;
@@ -112,7 +112,8 @@ pub unsafe extern "C" fn MultiMapInsert_RedisCommand(
 
     // We have to make some more casts to insert into our map.
     let map_key = string_from_module_string(args[2]);
-    let map_values = args.iter()
+    let map_values = args
+        .iter()
         .skip(3)
         .map(|v| string_from_module_string(*v as *const ffi::RedisModuleString).into_owned());
     let m = &mut *map;
@@ -301,13 +302,13 @@ pub unsafe extern "C" fn MultiMapRdbSave(rdb: *mut ffi::RedisModuleIO, value: *m
     for (k, v) in m {
         let k_len = k.len();
         let key = CString::new(k.as_bytes()).unwrap();
-        ffi::RedisModule_SaveStringBuffer.unwrap()(rdb, key.as_ptr(), k_len);
+        ffi::RedisModule_SaveStringBuffer.unwrap()(rdb, key.as_ptr(), k_len + 1);
 
         ffi::RedisModule_SaveUnsigned.unwrap()(rdb, v.len() as u64);
         for value in v {
             let v_len = value.len();
             let value_str = CString::new(value.as_bytes()).unwrap();
-            ffi::RedisModule_SaveStringBuffer.unwrap()(rdb, value_str.as_ptr(), v_len);
+            ffi::RedisModule_SaveStringBuffer.unwrap()(rdb, value_str.as_ptr(), v_len + 1);
         }
     }
 }
@@ -363,8 +364,6 @@ pub unsafe extern "C" fn RedisModule_OnLoad(
     let write_flag = CString::new("write").unwrap();
 
     let type_name = CString::new("rmultimap").unwrap();
-    // We should check if this is NULL like the C example does but it isn't working as intended
-    // currently.
     let out_type =
         ffi::RedisModule_CreateDataType.unwrap()(ctx, type_name.as_ptr(), 0, &mut type_functions);
     if out_type.is_null() {
