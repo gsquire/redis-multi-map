@@ -7,8 +7,15 @@ use Rust to provide a new data structure. The `MultiMap` type is akin to Redis' 
 benefit of storing more than one value.
 
 ## Production Readiness
-I would not consider this module to be production ready at the moment. There needs to be more
-unit tests as well as benchmarking.
+I would not consider this module to be production ready at the moment. There should be more extensive unit
+test coverage.
+
+Some benchmark numbers run locally with the provided script:
+
+```sh
+MULTIMAP.INSERT averaged over 5 runs: 66,760 requests/s
+SET averaged over 5 runs: 78,672 requests/s
+```
 
 ## Install
 You must have Rust and LLVM installed in order to compile this project. The preferred way to install Rust is using the
