@@ -10,7 +10,7 @@ benefit of storing more than one value.
 I would not consider this module to be production ready at the moment. There should be more extensive unit
 test coverage.
 
-Some benchmark numbers run locally with the provided script:
+Some benchmark numbers achieved by running the provided script locally:
 
 ```sh
 MULTIMAP.INSERT averaged over 5 runs: 66,760 requests/s
