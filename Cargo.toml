@@ -1,13 +1,14 @@
 [package]
 name = "redis-multi-map"
 version = "0.1.0"
+edition = "2018"
 authors = ["Garrett Squire <garrettsquire@gmail.com>"]
 
 [dependencies]
 libc = "0.2"
 
 [build-dependencies]
-bindgen = "0.38"
+bindgen = "0.47"
 cc = "1.0"
 
 [lib]

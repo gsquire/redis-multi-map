@@ -1,5 +1,3 @@
-extern crate libc;
-
 use std::borrow::Cow;
 use std::ffi::{CStr, CString};
 use std::os::raw;
@@ -9,7 +7,7 @@ use std::slice;
 mod ffi;
 mod multi_map;
 
-use multi_map::MultiMap;
+use crate::multi_map::MultiMap;
 
 // `MULTI_MAP_TYPE` is a value used to define what data type this module uses.
 static mut MULTI_MAP_TYPE: *mut ffi::RedisModuleType = 0 as *mut ffi::RedisModuleType;

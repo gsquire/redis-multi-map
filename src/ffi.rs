@@ -2,8 +2,6 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-use libc;
-
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 // We can't use C macros safely with FFI so redefine this message here.
