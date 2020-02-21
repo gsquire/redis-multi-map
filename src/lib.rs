@@ -1,4 +1,5 @@
 use std::borrow::Cow;
+use std::convert::TryInto;
 use std::ffi::{CStr, CString};
 use std::os::raw;
 use std::slice;
@@ -201,7 +202,11 @@ pub unsafe extern "C" fn MultiMapValues_RedisCommand(
                     let s_len = v.len();
                     let s = CString::new(v.as_bytes()).unwrap();
                     let s_ptr = s.into_raw();
-                    ffi::RedisModule_ReplyWithStringBuffer.unwrap()(ctx, s_ptr, s_len);
+                    ffi::RedisModule_ReplyWithStringBuffer.unwrap()(
+                        ctx,
+                        s_ptr,
+                        s_len.try_into().unwrap(),
+                    );
 
                     // Even with automatic memory mangement enabled, we must free these according
                     // to the Rust documentation.
@@ -300,13 +305,21 @@ pub unsafe extern "C" fn MultiMapRdbSave(rdb: *mut ffi::RedisModuleIO, value: *m
     for (k, v) in m {
         let k_len = k.len();
         let key = CString::new(k.as_bytes()).unwrap();
-        ffi::RedisModule_SaveStringBuffer.unwrap()(rdb, key.as_ptr(), k_len + 1);
+        ffi::RedisModule_SaveStringBuffer.unwrap()(
+            rdb,
+            key.as_ptr(),
+            (k_len + 1).try_into().unwrap(),
+        );
 
         ffi::RedisModule_SaveUnsigned.unwrap()(rdb, v.len() as u64);
         for value in v {
             let v_len = value.len();
             let value_str = CString::new(value.as_bytes()).unwrap();
-            ffi::RedisModule_SaveStringBuffer.unwrap()(rdb, value_str.as_ptr(), v_len + 1);
+            ffi::RedisModule_SaveStringBuffer.unwrap()(
+                rdb,
+                value_str.as_ptr(),
+                (v_len + 1).try_into().unwrap(),
+            );
         }
     }
 }
@@ -357,6 +370,9 @@ pub unsafe extern "C" fn RedisModule_OnLoad(
         free: Some(MultiMapFree),
         mem_usage: None,
         digest: None,
+        aux_load: None,
+        aux_save: None,
+        aux_save_triggers: 0,
     };
     // We reuse this flag so declare it at the beginning of the function.
     let write_flag = CString::new("write").unwrap();
